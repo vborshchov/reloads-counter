@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+      <div id="stats">
+          <input class="search" placeholder="Search" />
+          
+          <div class="table">
+            <table>
+              <!-- IMPORTANT, class="list" have to be at tbody -->
+              <thead class="st_table_header">
+                <td>
+                  <button class="sort" data-sort="host">
+                    Hostname
+                  </button>
+                </td>
+                <td>
+                  <button class="sort" data-sort="reloads">
+                    Reloads
+                  </button>
+                </td>
+              </thead>
+              <tbody class="list">
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination-wrapper">
+            <ul class="pagination"></ul>
+          </div>
+        </div>
+      <script src="./lib/list.min.js"></script>
+      <script src="popup.js"></script>
+    </body>
+  </html>
