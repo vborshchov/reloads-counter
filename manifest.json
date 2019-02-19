@@ -2,6 +2,7 @@
   "name": "Pages reloads counter",
   "version": "0.2.0",
   "description": "Counter for reloads per page",
+  "content_security_policy": "script-src 'self'; object-src 'self'",
   "permissions": [
     "activeTab",
     "storage"
