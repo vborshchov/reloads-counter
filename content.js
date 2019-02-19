@@ -10,11 +10,16 @@ if (performance.navigation.type === 1) { // Reload
     }
     chrome.storage.sync.get(['reloadStats'], function(result) {
         if (result.reloadStats) {
-            result.reloadStats[key] = ++result.reloadStats[key] || reloadCount 
+            if (result.reloadStats[key]) {
+                result.reloadStats[key].push(+new Date())
+            } else {
+                result.reloadStats[key] = []
+            }
+            result.reloadStats[key] =  result.reloadStats[key]
             chrome.storage.sync.set(result) 
         } else {
-            jsObj.reloadStats[key] = reloadCount
-            chrome.storage.sync.set(jsObj)    
+            jsObj.reloadStats[key] = [+new Date()]
+            chrome.storage.sync.set(jsObj)
         }
     })
 }
