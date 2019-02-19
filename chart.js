@@ -76,29 +76,90 @@ chrome.storage.sync.get(['reloadStats'], function(result) {
         title: {
             text: 'Reload Counts per page'
         },
+        grid: {
+            right: 200
+        },
         legend: {
             type: 'scroll',
             orient: 'vertical',
             right: 0,
             data: dataLegend,
-            // align: 'left'
+            itemGap: 1,
+            itemHeight: 10,
+            itemWidth: 10,
+            bottom: 50
         },
+        // toolbox: {
+        //     y: 'bottom',
+        //     right: 60,
+        //     feature: {
+        //         magicType: {
+        //             type: ['stack', 'tiled']
+        //         },
+        //         dataView: {},
+        //         saveAsImage: {
+        //             pixelRatio: 2
+        //         }
+        //     }
+        // },
         toolbox: {
-            y: 'bottom',
-            feature: {
-                magicType: {
-                    type: ['stack', 'tiled']
+            right: 5,
+            bottom: 20,
+            show : true,
+            feature : {
+                mark : {
+                    show: true
                 },
-                dataView: {},
+                dataView : {
+                    show: true,
+                    readOnly: false,
+                    title: 'data view',
+                    lang: ['data view', 'cancel', 'save']
+                },
+                magicType : {
+                    show: false,
+                    type: ['pie', 'bar', 'stack', 'tiled']
+                },
+                restore : {
+                    show: true,
+                    title: 'restore'
+                },
+                saveAsImage : {
+                    show: true,
+                    title: 'save'
+                },
+                dataZoom: {
+                    show: false,
+                    yAxisIndex: false,
+                    title: {
+                        back: 'back',
+                        zoom: 'zoom'
+                    }
+                },
                 saveAsImage: {
+                    title: 'export',
                     pixelRatio: 2
                 }
             }
         },
+        dataZoom: [
+            {
+                type: 'slider',
+                show: true,
+                xAxisIndex: [0],
+                filterMode: 'filter',
+                throttle: 60,
+            },
+            {
+                type: 'inside',
+                xAxisIndex: [0],
+                filterMode: 'filter',
+                throttle: 60,
+            },
+        ],
         tooltip: {},
         xAxis,
-        yAxis: {
-        },
+        yAxis: {},
         series,
         animationEasing: 'elasticOut',
         animationDelayUpdate: function (idx) {
