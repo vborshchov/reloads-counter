@@ -42,7 +42,7 @@ function calcStatsPerDay(reloadStats) {
 // }
 
   
-chrome.storage.sync.get(['reloadStats'], function(result) {
+chrome.storage.local.get(['reloadStats'], function(result) {
     // Chart
 
     const myChart = echarts.init(document.getElementById('chart'));

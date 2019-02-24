@@ -1,24 +1,25 @@
-const options = {
-    valueNames: [ 'host', 'reloads' ],
-    // Since there are no elements in the list, this will be used as template.
-    item:  `<tr>
-                <td class="host ellipse"></td>
-                <td class="reloads"></td>
-            </tr>`,
-    page: 10,
-    pagination: true
-};
-  
-let values = [];
-  
-chrome.storage.sync.get(['reloadStats'], function(result) {
-    if (result.reloadStats) {
-        for (let key in result.reloadStats) {
-            values.push({host: key, reloads: result.reloadStats[key].length})
-        }
+function prepareValues(data) {
+    let values = [];
+    for (let key in data) {
+        values.push({host: key, reloads: data[key].length})
     }
-    const statsList = new List('stats', options, values);
-    statsList.sort("reloads", {
-        order: "desc"
-    })
+    return values;
+}
+
+function renderTable(data) {
+    let options = {
+        data,
+        // layout:"fitColumns", //fit columns to width of table (optional)
+        columns:[ //Define Table Columns
+            {title:"HOST", field:"host", width: "80%"},
+            {title:"Realoads", field:"reloads", width: "20%", align:"left", formatter:"progress"},
+        ],
+    }
+    new Tabulator("#stats", options);
+}
+
+chrome.storage.local.get(['reloadStats'], function(result) {
+    if (result.reloadStats) {
+        renderTable(prepareValues(result.reloadStats))
+    }
 })
