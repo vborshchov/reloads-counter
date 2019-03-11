@@ -69,10 +69,10 @@ var options = {
     plugins: [
         // clean the build folder
         new CleanWebpackPlugin(
-            ["build"]
-            // {
-            //     verbose: true
-            // }
+            // ["build"]
+            {
+                verbose: true
+            }
         ),
         // expose and write the allowed env vars on the compiled bundle
         new webpack.DefinePlugin({
