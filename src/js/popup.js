@@ -1,11 +1,11 @@
 /*global chrome*/
 
 import "../css/popup.css";
-import Greeting from "./popup/greeting_component.jsx";
+import App from "./popup/App.jsx";
 import React from "react";
 import { render } from "react-dom";
 
 render(
-  <Greeting/>,
+  <App />,
   window.document.getElementById("app-container")
 );

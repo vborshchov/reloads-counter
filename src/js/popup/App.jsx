@@ -1,5 +1,6 @@
 import React from "react";
 import icon from "../../img/icon128.png"
+import Header from "./Header.jsx";
 import { hot } from "react-hot-loader";
 
 chrome.storage.local.get(["reloadStats"], function(result) {
@@ -8,10 +9,11 @@ chrome.storage.local.get(["reloadStats"], function(result) {
     }
 });
 
-class GreetingComponent extends React.Component {
+class App extends React.Component {
   render () {
     return (
       <div>
+        <Header name="Page reloads statistics!" />
         <p>Hello, find me on src/js/popup/greeting_component.jsx</p>
         <img src={icon} />
       </div>
@@ -19,4 +21,4 @@ class GreetingComponent extends React.Component {
   }
 };
 
-export default hot(module)(GreetingComponent)
+export default hot(module)(App);
