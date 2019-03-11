@@ -1,10 +1,77 @@
+(function(el){
+   const reloadsChart = {
+        chart: echarts.init(el),
+        options: {
+            bar: {},
+            pie: {}
+        },
+        init: function() {
+            chrome.storage.local.get(['reloadStats'], function(result) {
+                this.chart.setOption(this.options.bar)
+            })
+        },
+        calcStatsPerDay: function(reloadStats) {
+            let result = {}
+            let days = new Set()
+            for (let key in reloadStats) {
+                if (reloadStats.hasOwnProperty(key)) {
+                    for (let timing of reloadStats[key]) {
+                        const day = Math.floor(new Date(timing.navigationStart).getTime()/(1000*60*60*24));
+                        const beginingOfDay = day*1000*60*60*24
+                        days.add(beginingOfDay)
+                        const defaultObj = {}
+                        defaultObj[beginingOfDay] = 0
+                        result[key] = result[key] || defaultObj
+                        result[key][beginingOfDay] = ++result[key][beginingOfDay] || 1
+                    }
+                }
+            }
+            let usedDays = Array.from(days).sort()
+            usedDays.forEach(day => {
+                for (let key in reloadStats) {
+                    if (reloadStats.hasOwnProperty(key)) {
+                        if (result[key]) {
+                            result[key][day] = result[key][day] || 0
+                        }
+                    }
+                } 
+            })
+            return result;
+        },
+        prepareValues: function(data) {
+            let values = {
+                legendData: [],
+                seriesData: [],
+                selected: {}
+            };
+            let totalReloads = 0
+            for (let key in data) {
+                totalReloads += data[key].length
+            }
+            for (let key in data) {
+                values.legendData.push(key)
+                values.seriesData.push({name: key, value: data[key].length})
+                values.selected[key] = ((data[key].length / totalReloads) * 100) > 1
+            }
+        
+        
+            return values;
+        }
+   }
+
+//    reloadStats.init()
+})(document.getElementById('chart'))
+
 function calcStatsPerDay(reloadStats) {
     let result = {}
     let days = new Set()
     for (let key in reloadStats) {
         if (reloadStats.hasOwnProperty(key)) {
-            for (let date of reloadStats[key]) {
-                const day = Math.floor(new Date(date).getTime()/(1000*60*60*24));
+            for (let timing of reloadStats[key]) {
+                const day = Math.floor(
+                    new Date(timing.navigationStart).getTime() /
+                        (1000 * 60 * 60 * 24)
+                );
                 const beginingOfDay = day*1000*60*60*24
                 days.add(beginingOfDay)
                 const defaultObj = {}
@@ -16,13 +83,14 @@ function calcStatsPerDay(reloadStats) {
     }
     let usedDays = Array.from(days).sort()
     usedDays.forEach(day => {
-        for (let key in reloadStats) {
+        // for (let key in reloadStats) {
+        Object.keys(reloadStats).forEach( key => {
             if (reloadStats.hasOwnProperty(key)) {
                 if (result[key]) {
                     result[key][day] = result[key][day] || 0
                 }
             }
-        } 
+        })
     })
     return result;
 }
@@ -71,9 +139,16 @@ chrome.storage.local.get(['reloadStats'], function(result) {
     const xAxisData = new Set()
 
     const series = dataLegend.map((host) => {
-        Object.keys(statsPerDay[host]).forEach((day) => {
-            xAxisData.add(echarts.format.formatTime('MM/dd/yyyy', +day))
-        })
+        Object.keys(statsPerDay[host])
+            .sort()
+            .forEach(day => {
+                xAxisData.add(
+                    echarts.format.formatTime(
+                        "MM/dd/yyyy",
+                        new Date(+day)
+                    )
+                );
+            });
         let keys = Object.keys(statsPerDay[host]).sort()
         let data = keys.map(k => statsPerDay[host][k])
         return {

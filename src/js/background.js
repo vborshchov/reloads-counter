@@ -1,0 +1,5 @@
+import '../img/icon16.png'
+import '../img/icon32.png'
+import '../img/icon48.png'
+import '../img/icon64.png'
+import '../img/icon128.png'
