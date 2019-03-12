@@ -9,7 +9,8 @@
   "dependencies": {
     "node-sass": "^4.11.0",
     "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "react-dom": "^16.8.4",
+    "route-lite": "^0.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",
