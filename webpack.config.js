@@ -39,8 +39,8 @@ var options = {
     module: {
         rules: [
             {
-                test: /\.css$/,
-                loader: "style-loader!css-loader",
+                test: /\.(css|sass|scss)$/,
+                loader: "style-loader!css-loader!sass-loader",
                 exclude: /node_modules/
             },
             {

@@ -2,7 +2,7 @@ import React from "react";
 import timingInfo from "../../img/timing-overview.png"
 import Header from "./Header.jsx";
 import { hot } from "react-hot-loader";
-import "../../css/app.css";
+import "../../css/app.scss";
 
 chrome.storage.local.get(["reloadStats"], function(result) {
     if (result.reloadStats) {
@@ -13,8 +13,8 @@ chrome.storage.local.get(["reloadStats"], function(result) {
 class App extends React.Component {
   render () {
     return (
-        <div>
-            <Header name="Page reloads statistics!" />
+        <div className="app">
+            <Header name="Page reloads statistics" />
             <h2>
                 Navigation Timing
             </h2>
