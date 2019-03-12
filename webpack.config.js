@@ -74,6 +74,12 @@ var options = {
                 verbose: true
             }
         ),
+        new webpack.optimize.UglifyJsPlugin({
+            comments: false,
+            compressor: {
+                warnings: false
+            }
+        }),
         // expose and write the allowed env vars on the compiled bundle
         new webpack.DefinePlugin({
             "process.env.NODE_ENV": JSON.stringify(env.NODE_ENV)
