@@ -1,6 +1,6 @@
 import React from "react";
-import timingInfo from "../../img/timing-overview.png";
-import "../../css/about.scss";
+import timingInfo from "Assets/timing-overview.png";
+import "Styles/about.scss";
 
 const About = () => (
     <div className="about">

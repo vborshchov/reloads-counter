@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, goBack } from "route-lite";
 import About from "./About";
-import "../../css/header.scss";
+import "Styles/header.scss";
 
 const Header = ({ name }) => (
     <header>

@@ -8,7 +8,10 @@ var webpack = require("webpack"),
     WriteFilePlugin = require("write-file-webpack-plugin");
 
 // load the secrets
-var alias = {};
+var alias = {
+    Styles: path.resolve(__dirname, 'src/css/'),
+    Assets: path.resolve(__dirname, 'src/img/')
+};
 
 var secretsPath = path.join(__dirname, ("secrets." + env.NODE_ENV + ".js"));
 

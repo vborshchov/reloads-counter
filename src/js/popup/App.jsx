@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import { hot } from "react-hot-loader";
-import "../../css/app.scss";
+import "Styles/app.scss";
 import Router from "route-lite";
 import TableStats from "./TableStats";
 
