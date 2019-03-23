@@ -1,7 +1,7 @@
 /*global chrome*/
 
 import "Styles/popup.css";
-import App from "./popup/App.jsx";
+import App from "./popup/App";
 import React from "react";
 import { render } from "react-dom";
 
