@@ -7,14 +7,12 @@ import "Styles/header.scss";
 const Header = () => (
   <header>
     <nav className="navigation">
-      <ul>
-        <li>
-          <Link component={TableStats}>Home</Link>
-        </li>
-        <li>
-          <Link component={About}>About</Link>
-        </li>
-      </ul>
+      <Link className="navigation__item" component={TableStats}>
+        Home
+      </Link>
+      <Link className="navigation__item" component={About}>
+        About
+      </Link>
     </nav>
   </header>
 );

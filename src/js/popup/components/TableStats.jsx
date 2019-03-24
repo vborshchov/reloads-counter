@@ -2,6 +2,7 @@ import React from "react";
 import { useChromeStorage } from "../../hooks/chromeStorage";
 import statsTransformer from "../../utils/statsTransformer";
 import "Styles/tableStats.scss";
+import Tooltip from "../../sharedComponents/Tooltip";
 
 const roundToTwo = (num) => +(Math.round(num + "e+2") + "e-2");
 
@@ -26,10 +27,14 @@ const TableStats = () => {
                 <th className="table-stats__header-cell">Host</th>
                 <th className="table-stats__header-cell">
                   Avg load time (ms)
+                  <Tooltip
+                    position="right"
+                    message="Time from navigationStart to loadEventEnd"
+                  >
+                    ?
+                  </Tooltip>
                 </th>
-                <th className="table-stats__header-cell">
-                  Reloads
-                </th>
+                <th className="table-stats__header-cell">Reloads</th>
               </tr>
             </thead>
           </table>
@@ -43,7 +48,10 @@ const TableStats = () => {
                     <td className="table-stats__cell">{obj.host}</td>
                     {obj.series.map(value => {
                       return (
-                        <td key={obj.host+value} className="table-stats__cell">
+                        <td
+                          key={obj.host + value}
+                          className="table-stats__cell"
+                        >
                           {roundToTwo(value)}
                         </td>
                       );

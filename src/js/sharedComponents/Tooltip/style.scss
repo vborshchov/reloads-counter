@@ -1,0 +1,109 @@
+$color-light: #fff;
+$color-dark: #000;
+$tooltip-color: rgba($color-dark, .7);
+$tooltip-text-color: $color-light;
+
+.tooltip {
+  position: relative;
+  text-transform: unset; 
+}
+
+.tooltip-trigger {
+  background-color: rgba($color-dark, 0.2);
+  cursor: help;
+  margin: 2px;
+  padding: 2px;
+  min-width: 15px; 
+  min-height: 15px; 
+  border-radius: 100px; 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center; 
+}
+
+.tooltip-bubble {
+  text-transform: unset; 
+  min-width: 120px;
+  max-width: 210px;
+  position: absolute;
+  z-index: 10;
+  &::after {
+    content: '';
+    position: absolute;
+  }
+}
+
+.tooltip-top {
+  bottom: 100%;
+  left: 50%;
+  padding-bottom: 9px;
+  transform: translateX(-50%);
+  
+  &::after {
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 9px solid $tooltip-color;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.tooltip-bottom {
+  top: 100%;
+  left: 50%;
+  padding-top: 9px;
+  transform: translateX(-50%);
+  
+  &::after {
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-bottom: 9px solid $tooltip-color;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.tooltip-left {
+  top: 50%;
+  right: 100%;
+  padding-right: 9px;
+  transform: translateY(-50%);
+  
+  &::after {
+    border-left: 9px solid $tooltip-color;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+  }
+}
+
+.tooltip-right {
+  top: 50%;
+  left: 100%;
+  padding-left: 9px;
+  transform: translateY(-50%);
+  
+  &::after {
+    border-right: 9px solid $tooltip-color;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+  }
+}
+
+.tooltip-message {
+  text-transform: none;
+  background: $tooltip-color;
+  border-radius: 3px;
+  color: $tooltip-text-color;
+  font-size: .75rem;
+  line-height: 1.4;
+  padding: .75em;
+  text-align: center;
+}
