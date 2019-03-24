@@ -8,7 +8,7 @@ import TableStats from "./components/TableStats";
 const App = () => {
   return (
     <div className="app">
-      <Header name="Page reloads statistics" />
+      <Header />
       <Router>
         <TableStats />
       </Router>

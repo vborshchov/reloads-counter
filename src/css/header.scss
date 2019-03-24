@@ -1,5 +1,53 @@
+// .navigation {
+//   a {
+//     margin-left: 5px;
+//   }
+// }
+
+$main-color: #8dbeef;
+$dark-color: #1d1d20;
+$transition: all 0.3s ease-out;
+$border-radius:	5px;
+$box-shadow: 0 8px 15px -10px rgba(0, 0, 0, 0.3);
+
 .navigation {
-  a {
-    margin-left: 5px;
-  }
+	// position: fixed;
+	// z-index: 999;
+	margin: 0;
+	top: 0;
+	left: 0;
+  width: 100%;
+  margin: 0 0 15px 0;
+	ul {
+		margin: 0;
+		padding: 0 3em;
+		list-style: none;
+		display: flex;
+		flex-flow: row wrap;
+		align-items: stretch;
+		justify-content: stretch;
+		background: #fff;
+		box-shadow: $box-shadow;
+	}
+	li {
+		display: inline-flex;
+	}
+	a {
+		width: 100%;
+		text-decoration: none;
+    padding: 0.8em 1em 0.4em;
+    border-bottom: 2px solid transparent;
+		&:hover {
+			color: $dark-color;
+			// background: $main-color;
+			border-color: $dark-color;
+		}
+	}
+}
+
+.active a {
+	color: darken($main-color,4);
+	border-bottom: 2px solid darken($main-color,4);
+	// color: $dark-color;
+	// background: transparentize($main-color, 0.3);
 }

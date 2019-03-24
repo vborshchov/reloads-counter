@@ -25,7 +25,7 @@ const TableStats = () => {
               <tr>
                 <th className="table-stats__header-cell">Host</th>
                 <th className="table-stats__header-cell">
-                  Avarage load time (ms)
+                  Avg load time (ms)
                 </th>
                 <th className="table-stats__header-cell">
                   Reloads
@@ -43,7 +43,7 @@ const TableStats = () => {
                     <td className="table-stats__cell">{obj.host}</td>
                     {obj.series.map(value => {
                       return (
-                        <td className="table-stats__cell">
+                        <td key={obj.host+value} className="table-stats__cell">
                           {roundToTwo(value)}
                         </td>
                       );

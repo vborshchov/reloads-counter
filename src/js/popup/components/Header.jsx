@@ -1,14 +1,20 @@
 import React from "react";
-import { Link, goBack } from "route-lite";
+import { Link } from "route-lite";
 import About from "./About";
+import TableStats from "./TableStats";
 import "Styles/header.scss";
 
-const Header = ({ name }) => (
+const Header = () => (
   <header>
-    <h1>{name}</h1>
     <nav className="navigation">
-      <Link onClick={goBack}>Home</Link>
-      <Link component={About}>About</Link>
+      <ul>
+        <li>
+          <Link component={TableStats}>Home</Link>
+        </li>
+        <li>
+          <Link component={About}>About</Link>
+        </li>
+      </ul>
     </nav>
   </header>
 );
