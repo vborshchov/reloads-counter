@@ -11,7 +11,7 @@ const statsTransformer = {
     return Object.keys(data).map(key => {
       return {
         host: key,
-        value: this.hostAvarageLoadTime(data[key])
+        series: [this.hostAvarageLoadTime(data[key]), data[key].length]
       };
     });
   }

@@ -1,53 +1,65 @@
-import React, { useState, useEffect } from "react";
-import chromeManager from "../../utils/chromeManager";
+import React from "react";
+import { useChromeStorage } from "../../hooks/chromeStorage";
 import statsTransformer from "../../utils/statsTransformer";
 import "Styles/tableStats.scss";
 
+const roundToTwo = (num) => +(Math.round(num + "e+2") + "e-2");
+
 const TableStats = () => {
-  const [statsData, setStatsData] = useState({ reloadStats: [] });
+  const [isLoading, statsData] = useChromeStorage("reloadStats", []);
 
-  useEffect(() => {
-    chromeManager.get("reloadStats").then(result => {
-      setStatsData(result);
-    });
-  }, []);
+  const tableStatsData = statsData
+    ? statsTransformer
+      .avarageLoadTimePerHost(statsData)
+      .sort((a, b) => b.series[1] - a.series[1])
+    : [];
 
-  return (
-    <div className="table-stats">
-      <div class="table-stats__header">
-        <table cellpadding="0" cellspacing="0" border="0">
-          <thead>
-            <tr>
-              <th className="table-stats__header-cell">Host</th>
-              <th className="table-stats__header-cell">Avarage load time</th>
-            </tr>
-          </thead>
-        </table>
+  let content = <p>Loading statistics data...</p>;
+
+  if (!isLoading && tableStatsData && tableStatsData.length > 0) {
+    content = (
+      <div className="table-stats">
+        <div className="table-stats__header">
+          <table cellPadding="0" cellSpacing="0" border="0">
+            <thead>
+              <tr>
+                <th className="table-stats__header-cell">Host</th>
+                <th className="table-stats__header-cell">
+                  Avarage load time (ms)
+                </th>
+                <th className="table-stats__header-cell">
+                  Reloads
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div className="table-stats__content">
+          <table cellPadding="0" cellSpacing="0" border="0">
+            <tbody>
+              {tableStatsData.map(obj => {
+                return (
+                  <tr key={obj.host}>
+                    <td className="table-stats__cell">{obj.host}</td>
+                    {obj.series.map(value => {
+                      return (
+                        <td className="table-stats__cell">
+                          {roundToTwo(value)}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div class="table-stats__content">
-        <table cellpadding="0" cellspacing="0" border="0">
-          <tbody>
-            {statsData &&
-              statsTransformer
-                .avarageLoadTimePerHost(statsData)
-                .sort((a, b) => b.value - a.value)
-                .map(obj => {
-                  return (
-                    <tr key={obj.host}>
-                      <td className="table-stats__cell">
-                        {obj.host}
-                      </td>
-                      <td className="table-stats__cell">
-                        {obj.value.toFixed(2)} ms
-                      </td>
-                    </tr>
-                  );
-                })}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
+    );
+  } else if (!isLoading && (!tableStatsData || tableStatsData.length === 0)) {
+    content = <p>Could not get any data.</p>;
+  }
+  return content;
 };
 
 export default TableStats;
