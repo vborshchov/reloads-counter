@@ -8,7 +8,10 @@ const Header = () => (
   <header>
     <nav className="navigation">
       <Link className="navigation__item" component={TableStats}>
-        Home
+        Table
+      </Link>
+      <Link className="navigation__item" href="/chart.html">
+        Charts
       </Link>
       <Link className="navigation__item" component={About}>
         About

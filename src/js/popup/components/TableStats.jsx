@@ -11,8 +11,8 @@ const TableStats = () => {
 
   const tableStatsData = statsData
     ? statsTransformer
-      .avarageLoadTimePerHost(statsData)
-      .sort((a, b) => b.series[1] - a.series[1])
+        .getStats(statsData)
+        .sort((a, b) => b.reloadsCount - a.reloadsCount)
     : [];
 
   let content = <p>Loading statistics data...</p>;
@@ -45,17 +45,15 @@ const TableStats = () => {
               {tableStatsData.map(obj => {
                 return (
                   <tr key={obj.host}>
-                    <td className="table-stats__cell">{obj.host}</td>
-                    {obj.series.map(value => {
-                      return (
-                        <td
-                          key={obj.host + value}
-                          className="table-stats__cell"
-                        >
-                          {roundToTwo(value)}
-                        </td>
-                      );
-                    })}
+                    <td className="table-stats__cell">
+                      {obj.host}
+                    </td>
+                    <td className="table-stats__cell">
+                      {roundToTwo(obj.avgLoadTime)}
+                    </td>
+                    <td className="table-stats__cell">
+                      {roundToTwo(obj.reloadsCount)}
+                    </td>
                   </tr>
                 );
               })}
