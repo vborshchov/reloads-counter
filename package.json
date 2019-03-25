@@ -7,6 +7,9 @@
     "start": "node utils/webserver.js"
   },
   "dependencies": {
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^3.0.2",
+    "material-table": "^1.27.1",
     "node-sass": "^4.11.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",

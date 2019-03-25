@@ -10,8 +10,10 @@ export const useChromeStorage = (name, dependencies) => {
     console.log("Getting data from Chrome storage by name: " + name);
     chromeManager.get(name)
       .then(data => {
-        setIsLoading(false);
-        setFetchedData(data);
+        setTimeout(() => {
+          setIsLoading(false);
+          setFetchedData(data);
+        }, 10)
       })
       .catch(err => {
         console.log(err);
