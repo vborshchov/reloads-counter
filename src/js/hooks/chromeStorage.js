@@ -21,5 +21,17 @@ export const useChromeStorage = (name, dependencies) => {
       });
   }, dependencies);
 
-  return [isLoading, fetchedData];
+  const setChromeStorage = (data) => {
+    console.log("Setting new data to Chrome storage: ", data);
+    chromeManager
+      .set(data)
+      .then(result => {
+          setFetchedData(result.reloadStats);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  return [isLoading, fetchedData, setChromeStorage];
 };

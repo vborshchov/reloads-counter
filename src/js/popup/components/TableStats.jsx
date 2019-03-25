@@ -3,6 +3,7 @@ import { useChromeStorage } from "../../hooks/chromeStorage";
 import statsTransformer from "../../utils/statsTransformer";
 import "Styles/tableStats.scss";
 import MaterialTable, { MTableHeader } from "material-table";
+import chromeManager from "../../utils/chromeManager";
 
 const roundWithPrecision = (num, precision) =>
   +(Math.round(num + `e+${precision}`) + `e-${precision}`);
@@ -65,7 +66,7 @@ const options = {
 };
 
 const TableStats = () => {
-  const [isLoading, statsData] = useChromeStorage("reloadStats", []);
+  const [isLoading, statsData, setStatsData] = useChromeStorage("reloadStats", []);
 
   const tableStatsData = statsData
     ? statsTransformer
@@ -78,12 +79,20 @@ const TableStats = () => {
     :
       [];
 
+  const batchDeleteStats = rows => {
+    const newStatsData = Object.assign({}, statsData);
+    rows.forEach(row => {
+      delete newStatsData[row.host]
+    })
+    setStatsData({reloadStats: newStatsData})
+  };
+
   const actions = [
     {
       icon: 'delete',
       tooltip: 'Delete all',
       onClick: (event, rows) => {
-        alert('You selected ' + rows.length + ' rows')
+        batchDeleteStats(rows);
       },
     },
   ]
