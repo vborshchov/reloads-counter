@@ -1,7 +1,7 @@
 const chromeManager = {
   get(sKey) {
     return new Promise((resolve, reject) => {
-      chrome.storage.local.get(sKey, (items) => {
+      chrome.storage.local.get(sKey, items => {
         if (chrome.runtime.lastError) {
           console.error(chrome.runtime.lastError.message);
           reject(chrome.runtime.lastError.message);

@@ -2,64 +2,113 @@ import React from "react";
 import { useChromeStorage } from "../../hooks/chromeStorage";
 import statsTransformer from "../../utils/statsTransformer";
 import "Styles/tableStats.scss";
-import Tooltip from "../../sharedComponents/Tooltip";
+import MaterialTable, { MTableHeader } from "material-table";
+import chromeManager from "../../utils/chromeManager";
 
-const roundToTwo = (num) => +(Math.round(num + "e+2") + "e-2");
+const roundWithPrecision = (num, precision) =>
+  +(Math.round(num + `e+${precision}`) + `e-${precision}`);
+
+
+const columns = [
+  {
+    title: "Host",
+    field: "host",
+    export: true,
+    render: rowData => {
+      const host = rowData.host;
+      return (
+        <div className="host-cell">
+          <span className="host-cell__name">{host}</span>
+          <a
+            className="host-cell__link"
+            href={
+              host.indexOf("localhost") > -1
+                ? `http://${host}`
+                : `https://${host}`
+            }
+            target="_blank"
+          >
+            <i className="material-icons">link</i>
+          </a>
+        </div>
+      );
+    }
+  },
+  {
+    title: "Duration (ms)",
+    field: "avgLoadTime",
+    type: "numeric",
+    export: true
+  },
+  {
+    title: "Response (ms)",
+    field: "avgResponseTime",
+    type: "numeric",
+    export: true,
+    hidden: true
+  },
+  {
+    title: "Realods",
+    field: "reloadsCount",
+    type: "numeric",
+    defaultSort: "desc",
+    export: true
+  }
+];
+
+const options = {
+  columnsButton: true,
+  exportButton: true,
+  selection: true,
+  headerStyle: {
+    background: "#e8eaf5"
+  }
+};
 
 const TableStats = () => {
-  const [isLoading, statsData] = useChromeStorage("reloadStats", []);
+  const [isLoading, statsData, setStatsData] = useChromeStorage("reloadStats", []);
 
   const tableStatsData = statsData
     ? statsTransformer
         .getStats(statsData)
-        .sort((a, b) => b.reloadsCount - a.reloadsCount)
-    : [];
+        .map(el => {
+          el.avgLoadTime = roundWithPrecision(el.avgLoadTime, 0);
+          el.avgResponseTime = roundWithPrecision(el.avgResponseTime, 0);
+          return el;
+        })
+    :
+      [];
+
+  const batchDeleteStats = rows => {
+    const newStatsData = Object.assign({}, statsData);
+    rows.forEach(row => {
+      delete newStatsData[row.host]
+    })
+    setStatsData({reloadStats: newStatsData})
+  };
+
+  const actions = [
+    {
+      icon: 'delete',
+      tooltip: 'Delete all',
+      onClick: (event, rows) => {
+        batchDeleteStats(rows);
+      },
+    },
+  ]
 
   let content = <p>Loading statistics data...</p>;
 
   if (!isLoading && tableStatsData && tableStatsData.length > 0) {
     content = (
       <div className="table-stats">
-        <div className="table-stats__header">
-          <table cellPadding="0" cellSpacing="0" border="0">
-            <thead>
-              <tr>
-                <th className="table-stats__header-cell">Host</th>
-                <th className="table-stats__header-cell">
-                  Avg load time (ms)
-                  <Tooltip
-                    position="right"
-                    message="Time from navigationStart to loadEventEnd"
-                  >
-                    ?
-                  </Tooltip>
-                </th>
-                <th className="table-stats__header-cell">Reloads</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-        <div className="table-stats__content">
-          <table cellPadding="0" cellSpacing="0" border="0">
-            <tbody>
-              {tableStatsData.map(obj => {
-                return (
-                  <tr key={obj.host}>
-                    <td className="table-stats__cell">
-                      {obj.host}
-                    </td>
-                    <td className="table-stats__cell">
-                      {roundToTwo(obj.avgLoadTime)}
-                    </td>
-                    <td className="table-stats__cell">
-                      {roundToTwo(obj.reloadsCount)}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <MaterialTable
+          columns={columns}
+          data={tableStatsData}
+          title="Realods stats"
+          options={options}
+          actions={actions}
+        />
       </div>
     );
   } else if (!isLoading && (!tableStatsData || tableStatsData.length === 0)) {

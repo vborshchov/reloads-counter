@@ -1,7 +1,6 @@
 (function() {
   const reloadsStats = {
     storeStatsInfo: function(result) {
-      console.log(result);
       let key = window.location.host;
       // set default reloadStats object if needed
       result.reloadStats = result.reloadStats || {};
