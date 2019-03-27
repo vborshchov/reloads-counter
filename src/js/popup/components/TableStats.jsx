@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Fragment, useState } from "react";
 import { useChromeStorage } from "../../hooks/chromeStorage";
 import statsTransformer from "../../utils/statsTransformer";
 import "Styles/tableStats.scss";
-import MaterialTable, { MTableHeader } from "material-table";
-import chromeManager from "../../utils/chromeManager";
+import MaterialTable from "material-table";
+import { DateRangePicker } from "material-date-range-picker";
+import { isAfter, isBefore, differenceInDays } from 'date-fns';
 
 const roundWithPrecision = (num, precision) =>
   +(Math.round(num + `e+${precision}`) + `e-${precision}`);
@@ -67,6 +68,8 @@ const options = {
 
 const TableStats = () => {
   const [isLoading, statsData, setStatsData] = useChromeStorage("reloadStats", []);
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
 
   const tableStatsData = statsData
     ? statsTransformer
@@ -87,6 +90,59 @@ const TableStats = () => {
     setStatsData({reloadStats: newStatsData})
   };
 
+  const _handleDateRangeChange = selectedDate => {
+    if (typeof selectedDate === 'object' && selectedDate !== null && !(selectedDate instanceof Date)) {
+      const startDate = selectedDate.fromDate;
+      const endDate = selectedDate.toDate;
+      if (startDate === null && endDate === null) {
+        setFromDate(null);
+        setToDate(null);
+      }
+    } else {
+      console.log({ selectedDate })
+      // Warn and noop if the selected date is after the end date
+      if (!fromDate && toDate && isAfter(selectedDate, toDate)) {
+        alert('Start date should not be after end date')
+        return
+      }
+
+      // Reset the state if the selected date is equal
+      // to the end date
+      if (!fromDate && toDate && differenceInDays(selectedDate, toDate) === 0) {
+        setToDate(null);
+        return
+      }
+
+      // Set the starting date to the selected date
+      // if the starting date is empty
+      if (!fromDate) {
+        setFromDate(selectedDate)
+        return
+      }
+
+      // Set the ending date to the selected date if the start date
+      // is given and the selected date is after the start date
+      if (fromDate && isAfter(selectedDate, fromDate)) {
+        setToDate(selectedDate)
+        return
+      }
+
+      // Set the starting date to the selected date if the
+      // starting date is given and the selected date is
+      // before the selected date
+      if (fromDate && isBefore(selectedDate, fromDate)) {
+        setFromDate(selectedDate)
+        return
+      }
+
+      // Empty the starting date if the selected date and starting
+      // date are equal
+      if (fromDate && differenceInDays(fromDate, selectedDate) === 0) {
+        setFromDate(null)
+      }
+    }
+  };
+
   const actions = [
     {
       icon: 'delete',
@@ -101,15 +157,26 @@ const TableStats = () => {
 
   if (!isLoading && tableStatsData && tableStatsData.length > 0) {
     content = (
-      <div className="table-stats">
-        <MaterialTable
-          columns={columns}
-          data={tableStatsData}
-          title="Realods stats"
-          options={options}
-          actions={actions}
-        />
-      </div>
+      <Fragment>
+        <div className="date-range-picker-wrapper">
+          <DateRangePicker
+            className="date-range-picker"
+            fromDate={fromDate} //from date
+            toDate={toDate} //to Date
+            onChange={_handleDateRangeChange}
+            closeDialogOnSelection={false} //close date dialog after selecting both from and to date
+          />
+        </div>
+        <div className="table-stats">
+          <MaterialTable
+            columns={columns}
+            data={tableStatsData}
+            title="Realods stats"
+            options={options}
+            actions={actions}
+          />
+        </div>
+      </Fragment>
     );
   } else if (!isLoading && (!tableStatsData || tableStatsData.length === 0)) {
     content = <p>Could not get any data.</p>;

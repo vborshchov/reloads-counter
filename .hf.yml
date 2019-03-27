@@ -5,13 +5,10 @@ deploy:
 before_deploy_commit: 'echo ''Before committing with deploy'' '
 locale: en
 skip_colorize: false
-
 source_branch: master
 mode: feature
 task_branch_name_tpl: "{mode}/{task_name}"
-
 project_name: ''
 commit_massage_tpl: "#{task_name}: {commit_message}"
-
 run:
-  test: 'echo "run test"'
+  test: echo "run test"

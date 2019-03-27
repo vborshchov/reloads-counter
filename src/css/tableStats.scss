@@ -26,3 +26,19 @@ section{
 .table-header {
   background-color: #e8eaf5;
 }
+
+.date-range-picker-wrapper {
+  flex-direction: column;
+  margin: 10px;
+  display: flex;
+  margin: 10px;
+}
+
+.date-range-picker {
+  align-self: flex-end;
+  width: 310px;
+}
+
+.date-range-picker > div {
+  z-index: 15;
+}
