@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { useChromeStorage } from "../../hooks/chromeStorage";
-import statsTransformer from "../../utils/statsTransformer";
+import statisticsManager from "../../utils/statisticsManager";
 import "Styles/tableStats.scss";
 import MaterialTable from "material-table";
 import { DateRangePicker } from "material-date-range-picker";
@@ -72,8 +72,8 @@ const TableStats = () => {
   const [toDate, setToDate] = useState(null);
 
   const tableStatsData = statsData
-    ? statsTransformer
-        .getStats(statsData)
+    ? statisticsManager
+        .getStats(statsData, {dateRange: {from: fromDate, to: toDate}})
         .map(el => {
           el.avgLoadTime = roundWithPrecision(el.avgLoadTime, 0);
           el.avgResponseTime = roundWithPrecision(el.avgResponseTime, 0);
@@ -99,10 +99,9 @@ const TableStats = () => {
         setToDate(null);
       }
     } else {
-      console.log({ selectedDate })
       // Warn and noop if the selected date is after the end date
       if (!fromDate && toDate && isAfter(selectedDate, toDate)) {
-        alert('Start date should not be after end date')
+        console.error('Start date should not be after end date')
         return
       }
 
