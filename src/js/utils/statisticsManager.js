@@ -1,5 +1,7 @@
 import filterManager from "./filterManager";
 
+const START_PAGE_LOAD_TIME = 20000
+
 const statisticsManager = {
   hostAvarageLoadTime: function(data) {
     const count = data.length;
@@ -18,7 +20,7 @@ const statisticsManager = {
     return duration / count || 0;
   },
   getStats: function(data, filters) {
-    const {dateRange: {from, to}} = filters
+    const { dateRange: {from, to}, maxDuration } = filters
     const result = []
     Object.keys(data).forEach(key => {
       // apply filters
@@ -26,11 +28,20 @@ const statisticsManager = {
       if (from && to) {
         hostReloads = filterManager.filterByDateRange(hostReloads, {from, to})
       }
+      if (maxDuration) {
+        hostReloads = filterManager.filterBelowMaxPageLoadDuration(
+          hostReloads,
+          maxDuration
+        );
+      }
+
       if (hostReloads.length) {
+        const avgLoadTime = this.hostAvarageLoadTime(hostReloads);
+        const avgResponseTime = this.hostAvarageResponseTime(hostReloads);
         result.push({
           host: key,
-          avgLoadTime: this.hostAvarageLoadTime(hostReloads),
-          avgResponseTime: this.hostAvarageResponseTime(hostReloads),
+          avgLoadTime: avgLoadTime,
+          avgResponseTime: avgResponseTime,
           reloadsCount: hostReloads.length
         });
       }

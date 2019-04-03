@@ -27,15 +27,20 @@ section{
   background-color: #e8eaf5;
 }
 
-.date-range-picker-wrapper {
-  flex-direction: column;
+.filters-wrapper {
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
   margin: 10px;
   display: flex;
-  margin: 10px;
+}
+
+.filter {
+  width: 250px;
 }
 
 .date-range-picker {
-  align-self: flex-end;
+  margin: 0 0 8px 0;
   width: 310px;
 }
 

@@ -7,7 +7,15 @@ const filterManager = {
             }
             return false; 
         })
-    }
+    },
+    filterBelowMaxPageLoadDuration: (data, maxDuration) => {
+    return data.filter(item => {
+        return (
+            item.loadEventEnd - item.navigationStart <=
+            maxDuration
+        );
+    })
+},
 }
 
 export default filterManager;

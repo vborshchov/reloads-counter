@@ -5,6 +5,7 @@ import "Styles/tableStats.scss";
 import MaterialTable from "material-table";
 import { DateRangePicker } from "material-date-range-picker";
 import { isAfter, isBefore, differenceInDays } from 'date-fns';
+import TextField from "@material-ui/core/TextField";
 
 const roundWithPrecision = (num, precision) =>
   +(Math.round(num + `e+${precision}`) + `e-${precision}`);
@@ -70,10 +71,11 @@ const TableStats = () => {
   const [isLoading, statsData, setStatsData] = useChromeStorage("reloadStats", []);
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
+  const [maxDuration, setMaxDuration] = useState(0);
 
   const tableStatsData = statsData
     ? statisticsManager
-        .getStats(statsData, {dateRange: {from: fromDate, to: toDate}})
+      .getStats(statsData, { dateRange: { from: fromDate, to: toDate }, maxDuration })
         .map(el => {
           el.avgLoadTime = roundWithPrecision(el.avgLoadTime, 0);
           el.avgResponseTime = roundWithPrecision(el.avgResponseTime, 0);
@@ -142,6 +144,11 @@ const TableStats = () => {
     }
   };
 
+  const _handleMaxDurationChange = event => {
+    console.log({maxDuration: event.target.value})
+    setMaxDuration(event.target.value);
+  }
+
   const actions = [
     {
       icon: 'delete',
@@ -152,35 +159,77 @@ const TableStats = () => {
     },
   ]
 
-  let content = <p>Loading statistics data...</p>;
+  // let content = <p>Loading statistics data...</p>;
 
-  if (!isLoading && tableStatsData && tableStatsData.length > 0) {
-    content = (
-      <Fragment>
-        <div className="date-range-picker-wrapper">
-          <DateRangePicker
-            className="date-range-picker"
-            fromDate={fromDate} //from date
-            toDate={toDate} //to Date
-            onChange={_handleDateRangeChange}
-            closeDialogOnSelection={false} //close date dialog after selecting both from and to date
-          />
-        </div>
-        <div className="table-stats">
-          <MaterialTable
-            columns={columns}
-            data={tableStatsData}
-            title="Realods stats"
-            options={options}
-            actions={actions}
-          />
-        </div>
-      </Fragment>
-    );
-  } else if (!isLoading && (!tableStatsData || tableStatsData.length === 0)) {
-    content = <p>Could not get any data.</p>;
-  }
-  return content;
+  // if (!isLoading && tableStatsData && tableStatsData.length > 0) {
+  //   content = (
+  //       <div className="table-stats">
+  //         <MaterialTable
+  //           columns={columns}
+  //           data={tableStatsData}
+  //           title="Realods stats"
+  //           options={options}
+  //           actions={actions}
+  //         />
+  //       </div>
+  //   );
+  // } else if (!isLoading && (!tableStatsData || tableStatsData.length === 0)) {
+  //   content = <p>Could not get any data.</p>;
+  // }
+  return (
+    <Fragment>
+      <div className="filters-wrapper">
+        {/* <TextField
+          label="Max Page Load Duration"
+          value={maxDuration}
+          onChange={_handleMaxDurationChange}
+          type="number"
+          InputLabelProps={{
+            shrink: true
+          }}
+          margin="normal"
+          variant="outlined"
+        /> */}
+        <TextField
+          select
+          label="Page load duration limit"
+          value={maxDuration}
+          onChange={_handleMaxDurationChange}
+          className="filter max-page-load-limit"
+          SelectProps={{
+            native: true,
+            MenuProps: {
+              className: "menu"
+            }
+          }}
+          margin="normal"
+        >
+          <option value="" />
+          <option value="5000">5s</option>
+          <option value="10000">10s</option>
+          <option value="20000">20s</option>
+          <option value="30000">30s</option>
+          <option value="60000">60s</option>
+        </TextField>
+        <DateRangePicker
+          className="filter date-range-picker"
+          fromDate={fromDate} //from date
+          toDate={toDate} //to Date
+          onChange={_handleDateRangeChange}
+          closeDialogOnSelection={false} //close date dialog after selecting both from and to date
+        />
+      </div>
+      <div className="table-stats">
+        <MaterialTable
+          columns={columns}
+          data={tableStatsData}
+          title="Realods stats"
+          options={options}
+          actions={actions}
+        />
+      </div>
+    </Fragment>
+  );
 };
 
 export default TableStats;
