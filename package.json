@@ -23,6 +23,7 @@
     "babel-core": "^6.17.0",
     "babel-loader": "^6.2.4",
     "babel-plugin-styled-components": "^1.10.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-react": "^6.16.0",
     "clean-webpack-plugin": "^2.0.0",
     "copy-webpack-plugin": "^4.2.0",

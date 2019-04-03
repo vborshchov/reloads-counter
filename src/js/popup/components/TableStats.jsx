@@ -83,7 +83,7 @@ const TableStats = () => {
       [];
 
   const batchDeleteStats = rows => {
-    const newStatsData = Object.assign({}, statsData);
+    const newStatsData = {...statsData};
     rows.forEach(row => {
       delete newStatsData[row.host]
     })
