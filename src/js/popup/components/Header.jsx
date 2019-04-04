@@ -3,6 +3,7 @@ import { Link } from "route-lite";
 import About from "./About";
 import TableStats from "./TableStats";
 import Launch from "@material-ui/icons/Launch";
+import Tooltip from "@material-ui/core/Tooltip";
 import "Styles/header.scss";
 
 const openInSeparatePage = () => {
@@ -23,7 +24,9 @@ const Header = () => (
       </Link>
     </nav>
     <div className="right-items">
-      <Launch className="right-items__link" onClick={openInSeparatePage} />
+      <Tooltip title="Open in new tab" aria-label="Open in new tab">
+        <Launch className="right-items__link" onClick={openInSeparatePage} />
+      </Tooltip>
     </div>
   </header>
 );
