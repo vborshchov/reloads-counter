@@ -5,6 +5,10 @@ import TableStats from "./TableStats";
 import Launch from "@material-ui/icons/Launch";
 import "Styles/header.scss";
 
+const openInSeparatePage = () => {
+  chrome.tabs.create({ url: "popup.html" });
+}
+
 const Header = () => (
   <header className="app-header">
     <nav className="navigation">
@@ -19,7 +23,7 @@ const Header = () => (
       </Link>
     </nav>
     <div className="right-items">
-      <Launch className="right-items__link" />
+      <Launch className="right-items__link" onClick={openInSeparatePage} />
     </div>
   </header>
 );

@@ -3,7 +3,6 @@ $text-color: #ffffff;
 $light-color: #47c425;
 $transition: all 0.3s ease-out;
 $border-radius:	5px;
-$box-shadow: 0 8px 15px -10px rgba(0, 0, 0, 0.3);
 
 .app-header {
   padding: 0 3em;
@@ -20,7 +19,6 @@ $box-shadow: 0 8px 15px -10px rgba(0, 0, 0, 0.3);
   flex-flow: row wrap;
   align-items: stretch;
   justify-content: stretch;
-  box-shadow: $box-shadow;
 }
 
 .navigation__item {
