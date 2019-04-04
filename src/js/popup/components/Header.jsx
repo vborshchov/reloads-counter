@@ -2,10 +2,11 @@ import React from "react";
 import { Link } from "route-lite";
 import About from "./About";
 import TableStats from "./TableStats";
+import Launch from "@material-ui/icons/Launch";
 import "Styles/header.scss";
 
 const Header = () => (
-  <header>
+  <header className="app-header">
     <nav className="navigation">
       <Link className="navigation__item" component={TableStats}>
         Table
@@ -17,6 +18,9 @@ const Header = () => (
         About
       </Link>
     </nav>
+    <div className="right-items">
+      <Launch className="right-items__link" />
+    </div>
   </header>
 );
 

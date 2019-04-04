@@ -5,14 +5,21 @@ $transition: all 0.3s ease-out;
 $border-radius:	5px;
 $box-shadow: 0 8px 15px -10px rgba(0, 0, 0, 0.3);
 
-.navigation {
-  margin: 0 0 15px 0;
+.app-header {
   padding: 0 3em;
+  background: $main-color;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navigation {
+  margin: 0 0 10px 0;
+  padding: 0;
   display: flex;
   flex-flow: row wrap;
   align-items: stretch;
   justify-content: stretch;
-  background: $main-color;
   box-shadow: $box-shadow;
 }
 
@@ -27,5 +34,13 @@ $box-shadow: 0 8px 15px -10px rgba(0, 0, 0, 0.3);
     color: $light-color;
     // background: $main-color;
     border-color: $light-color;
+  }
+}
+
+.right-items__link {
+  cursor: pointer;
+  color: $text-color;
+  &:hover {
+    color: $light-color;
   }
 }
