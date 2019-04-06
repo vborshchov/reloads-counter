@@ -7,6 +7,8 @@ var webpack = require("webpack"),
     HtmlWebpackPlugin = require("html-webpack-plugin"),
     WriteFilePlugin = require("write-file-webpack-plugin");
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 // load the secrets
 var alias = {
     Styles: path.resolve(__dirname, 'src/css/'),
@@ -22,7 +24,6 @@ if (fileSystem.existsSync(secretsPath)) {
 }
 
 var options = {
-  // mode: env.NODE_ENV,
   entry: {
     popup: path.join(__dirname, "src", "js", "popup.js"),
     options: path.join(__dirname, "src", "js", "options.js"),
@@ -125,9 +126,10 @@ var options = {
     new WriteFilePlugin()
   ]
 };
-
+console.log(env.NODE_ENV);
 if (env.NODE_ENV === "development") {
   options.devtool = "cheap-module-eval-source-map";
+  options.plugins.push(new BundleAnalyzerPlugin());
 }
 
 module.exports = options;
